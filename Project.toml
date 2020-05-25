@@ -1,0 +1,4 @@
+name = "FundamentalsNumericalComputation"
+uuid = "e48b7b93-d2a8-4750-aba7-f743ccd5256c"
+authors = ["Toby Driscoll <driscoll@udel.edu>"]
+version = "0.1.0"
