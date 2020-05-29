@@ -83,7 +83,7 @@ function spinterp(t,y)
     rows = 1:n
     a = z[rows]
     b = z[n.+rows];  c = z[2*n.+rows];  d = z[3*n.+rows]
-    S = [ Poly([a[k],b[k],c[k],d[k]]) for k = 1:n ]
+    S = [ Polynomial([a[k],b[k],c[k],d[k]]) for k = 1:n ]
     # This function evaluates the spline when called with a value for x.
     function evaluate(x)
         k = findfirst(@. x<t)   # one more than interval x belongs to
