@@ -61,35 +61,33 @@ function secant(f,x1,x2)
 end
 
 """
-    newtonsys(f,x1)
+    newtonsys(f,jac,x1)
 
 Use Newton's method to find a root of a system of equations, starting from `x1`. The
-function `f` should return both the residual vector and the Jacobian matrix. Returns
-root estimates as a matrix, one estimate per column.
+functions `f` and `jac should return the residual vector and the Jacobian matrix, 
+respectively. Returns history of root estimates as a vector of vectors.
 """
-function newtonsys(f,x1)
+function newtonsys(f,jac,x1)
     # Operating parameters.
     funtol = 1000*eps();  xtol = 1000*eps();  maxiter = 40;
 
-    x = zeros(length(x1),maxiter)
-    x[:,1] = x1
-    y,J = f(x1)
+    x = [float(x1)]
+    y,J = f(x1),jac(x1)
     dx = Inf   # for initial pass below
     k = 1
 
     while (norm(dx) > xtol) && (norm(y) > funtol) && (k < maxiter)
         dx = -(J\y)             # Newton step
-        x[:,k+1] = x[:,k] + dx
-
-        k = k+1
-        y,J = f(x[:,k])
+        push!(x,x[k] + dx)    # append to history
+        k += 1
+        y,J = f(x[k]),jac(x[k])
     end
 
     if k==maxiter
         @warn "Maximum number of iterations reached."
     end
 
-    return x[:,1:k]
+    return x
 end
 
 """
@@ -101,11 +99,11 @@ where `y0`=`f(x0)` is given.
 function fdjac(f,x0,y0)
 
 delta = sqrt(eps())   # FD step size
-m,n = (length(y0),length(x0))
+m,n = length(y0),length(x0)
 J = zeros(m,n)
-I = diagm(0=>ones(n))
+In = I(n)
 for j = 1:n
-    J[:,j] = ( f(x0 + delta*I[:,j]) - y0) / delta
+    J[:,j] = ( f(x0 + delta*In[:,j]) - y0) / delta
 end
 
 return J
@@ -124,10 +122,10 @@ function levenberg(f,x1,tol=1e-12)
 ftol = tol;  xtol = tol;  maxiter = 40;
 
 x = zeros(length(x1),maxiter)
-x[:,1] = x1
+x = [float(x1)]
 fk = f(x1)
 k = 1;  s = Inf;
-Ak = fdjac(f,x[:,1],fk)   # start with FD Jacobian
+Ak = fdjac(f,x1,fk)   # start with FD Jacobian
 jac_is_new = true
 
 lambda = 10;
@@ -137,13 +135,15 @@ while (norm(s) > xtol) && (norm(fk) > ftol) && (k < maxiter)
     z = Ak'*fk
     s = -(B\z)
 
-    xnew = x[:,k] + s;   fnew = f(xnew);
+    xnew = x[k] + s
+    fnew = f(xnew)
 
     # Do we accept the result?
     if norm(fnew) < norm(fk)    # accept
         y = fnew - fk
-        x[:,k+1] = xnew;  fk = fnew;
-        k = k+1
+        push!(x,xnew)
+        fk = fnew
+        k += 1
 
         lambda = lambda/10   # get closer to Newton
         # Broyden update of the Jacobian.
@@ -151,10 +151,10 @@ while (norm(s) > xtol) && (norm(fk) > ftol) && (k < maxiter)
         jac_is_new = false
     else                       # don't accept
         # Get closer to steepest descent.
-        lambda = lambda*4
+        lambda = 4lambda
         # Re-initialize the Jacobian if it's out of date.
         if !jac_is_new
-            Ak = fdjac(f,x[:,k],fk)
+            Ak = fdjac(f,x[k],fk)
             jac_is_new = true
         end
     end
@@ -164,5 +164,5 @@ if (norm(fk) > 1e-3)
     @warn "Iteration did not find a root."
 end
 
-return x[:,1:k]
+return x
 end

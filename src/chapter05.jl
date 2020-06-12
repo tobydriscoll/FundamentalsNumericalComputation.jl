@@ -11,9 +11,9 @@ function hatfun(x,t,k)
     # Return correct node given mathematical index k, including fictitious choices.   
     function node(k)
         if k < 0
-            2*t[1]-t[2]
+            2t[1]-t[2]
         elseif k > n 
-            2*t[n+1]-t[n] 
+            2t[n+1]-t[n] 
         else
             t[k+1]
         end
@@ -50,16 +50,16 @@ function spinterp(t,y)
 
     # Preliminary definitions.
     Z = zeros(n,n);
-    I = diagm(0=>ones(n));  E = I[1:n-1,:];
+    In = I(n);  E = In[1:n-1,:];
     J = diagm(0=>ones(n),1=>-ones(n-1))
     H = diagm(0=>h)
 
     # Left endpoint interpolation:
-    AL = [ I Z Z Z ]
+    AL = [ In Z Z Z ]
     vL = y[1:n]
 
     # Right endpoint interpolation:
-    AR = [ I H H^2 H^3 ];
+    AR = [ In H H^2 H^3 ];
     vR = y[2:n+1]
 
     # Continuity of first derivative:
@@ -86,9 +86,9 @@ function spinterp(t,y)
     S = [ Polynomial([a[k],b[k],c[k],d[k]]) for k = 1:n ]
     # This function evaluates the spline when called with a value for x.
     function evaluate(x)
-        k = findfirst(@. x<t)   # one more than interval x belongs to
+        k = findfirst(@. x<t)   # one greater than interval x belongs to
         k==1 && return NaN
-        if k==nothing
+        if isnothing(k)
             return x==t[end] ? y[end] : NaN
         end
         return S[k-1](x-t[k-1])
@@ -145,7 +145,7 @@ integrand values at the nodes.
 """
 function trapezoid(f,a,b,n)
     h = (b-a)/n
-    t = a .+ h*(0:n)
+    t = LinRange(a,b,n+1)
     y = f.(t)
     T = h * ( sum(y[2:n]) + 0.5*(y[1] + y[n+1]) )
 
