@@ -100,10 +100,14 @@ function fdjac(f,x0,y0)
 
 delta = sqrt(eps())   # FD step size
 m,n = length(y0),length(x0)
-J = zeros(m,n)
-In = I(n)
-for j = 1:n
-    J[:,j] = ( f(x0 + delta*In[:,j]) - y0) / delta
+if n==1
+    J = (f(x0+delta) - y0) / delta
+else
+    J = zeros(m,n)
+    In = I(n)
+    for j = 1:n
+        J[:,j] = (f(x0 + delta*In[:,j]) - y0) / delta
+    end
 end
 
 return J

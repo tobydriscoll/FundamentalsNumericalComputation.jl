@@ -1,4 +1,4 @@
-using FundamentalsNumericalComputation,LinearAlgebra
+using FundamentalsNumericalComputation,LinearAlgebra,DifferentialEquations
 using Test
 
 @testset "Chapter 1" begin
@@ -85,6 +85,32 @@ end
 	@test y ≈ (0.22-t[5])/(t[6]-t[5])
 	@test FNC.hatfun(0.6,t,5)==0
 	p = FNC.plinterp(t,f.(t)) 
-	@test p(0.22) ≈ f(t[5]) + (f(t[6])-f(t[5]))*(0.22-t[5])/(t[6]-t[5])
-	
+	@test p(0.22) ≈ f(t[5]) + (f(t[6])-f(t[5]))*(0.22-t[5])/(t[6]-t[5])	
+end
+
+@testset "Chapter 6" begin
+	t,u = FNC.eulerivp((u,t)->u^2,1/4,(0.,2),5000)
+	@test u[end] ≈ 1/(4-2) rtol=0.005
+
+	f = (u,p,t) -> u + p*t^2
+	û = exp(1.5) - 2*(-2 + 2*exp(1.5) - 2*1.5 - 1.5^2)
+	t,u = FNC.euler(f,1,(0.,1.5),-2,4000)
+	@test û ≈ u[end] rtol = 0.005
+	t,u = FNC.am2(f,1,(0.,1.5),-2,4000)
+	@test û ≈ u[end] rtol = 0.005
+
+	g = (u,p,t) -> [t+p-sin(u[2]),u[1]]
+	sol = solve(ODEProblem(g,[-1.,4],(1.,2.),-6))
+	t,u = FNC.euler(g,[-1.,4],(1.,2.),-6,4000)
+	@test u[end] ≈ sol.u[end] rtol=0.004
+	t,u = FNC.ie2(g,[-1.,4],(1.,2.),-6,4000)
+	@test u[end] ≈ sol.u[end] rtol=0.0005
+	t,u = FNC.rk4(g,[-1.,4],(1.,2.),-6,800)
+	@test u[end] ≈ sol.u[end] rtol=0.0005
+	t,u = FNC.ab4(g,[-1.,4],(1.,2.),-6,800)
+	@test u[end] ≈ sol.u[end] rtol=0.0005
+	t,u = FNC.rk23(g,[-1.,4],(1.,2.),-6,1e-4)
+	@test u[end] ≈ sol.u[end] rtol=0.0005
+	t,u = FNC.am2(g,[-1.,4],(1.,2.),-6,2000)
+	@test u[end] ≈ sol.u[end] rtol=0.0005
 end

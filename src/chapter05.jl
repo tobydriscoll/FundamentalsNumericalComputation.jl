@@ -34,7 +34,7 @@ in `t`.
 """
 function plinterp(t,y)
 n = length(t)-1
-return x -> sum( y[k+1]*hatfun(x,t,k) for k=0:n )
+return x -> sum( y[k+1]*hatfun(x,t,k) for k in 0:n )
 end
 
 """
