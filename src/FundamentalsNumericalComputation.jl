@@ -3,9 +3,18 @@ module FundamentalsNumericalComputation
 export FNC
 FNC = FundamentalsNumericalComputation
 
-using LinearAlgebra, SparseArrays
-using Polynomials
-using NLsolve, DifferentialEquations
+using Reexport
+
+@reexport using LinearAlgebra
+@reexport using SparseArrays
+@reexport using Polynomials
+@reexport using NLsolve
+@reexport using DifferentialEquations
+@reexport using Plots
+@reexport using DataFrames 
+@reexport using Interpolations
+
+@info "Exporting: LinearAlgebra,SparseArrays,Polynomials,NLsolve,Interpolations,DifferentialEquations,DataFrames,Plots"
 
 include("chapter01.jl")
 include("chapter02.jl")
