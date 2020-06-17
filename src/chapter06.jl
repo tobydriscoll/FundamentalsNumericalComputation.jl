@@ -5,14 +5,14 @@ Apply Euler's method to solve the IVP u'=`dudt`(u,t) over the interval `tspan` w
 u(`tspan[1]`)=`u0`, using `n` subintervals/steps. Return vectors of times and solution
 values.
 """
-function eulerivp(dudt,u0,tspan,n)
+function eulerivp(dudt,u0,tspan,p,n)
     a,b = tspan
     h = (b-a)/n
     t = [ a + i*h for i in 0:n ]
     u = zeros(n+1)
     u[1] = u0
     for i in 1:n
-      u[i+1] = u[i] + h*dudt(u[i],t[i])
+      u[i+1] = u[i] + h*dudt(u[i],p,t[i])
     end
     return t,u
 end
