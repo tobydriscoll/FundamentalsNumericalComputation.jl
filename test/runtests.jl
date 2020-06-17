@@ -89,28 +89,27 @@ end
 end
 
 @testset "Chapter 6" begin
-	t,u = FNC.eulerivp((u,t)->u^2,1/4,(0.,2),5000)
-	@test u[end] ≈ 1/(4-2) rtol=0.005
-
 	f = (u,p,t) -> u + p*t^2
 	û = exp(1.5) - 2*(-2 + 2*exp(1.5) - 2*1.5 - 1.5^2)
-	t,u = FNC.euler(f,1,(0.,1.5),-2,4000)
+	ivp = ODEProblem(f,1,(0,1.5),-2)
+	t,u = FNC.euler(ivp,4000)
 	@test û ≈ u[end] rtol = 0.005
-	t,u = FNC.am2(f,1,(0.,1.5),-2,4000)
+	t,u = FNC.am2(ivp,4000)
 	@test û ≈ u[end] rtol = 0.005
 
 	g = (u,p,t) -> [t+p-sin(u[2]),u[1]]
-	sol = solve(ODEProblem(g,[-1.,4],(1.,2.),-6))
-	t,u = FNC.euler(g,[-1.,4],(1.,2.),-6,4000)
+	ivp = ODEProblem(g,[-1.,4],(1.,2.),-6)
+	sol = solve(ivp)
+	t,u = FNC.euler(ivp,4000)
 	@test u[end] ≈ sol.u[end] rtol=0.004
-	t,u = FNC.ie2(g,[-1.,4],(1.,2.),-6,4000)
+	t,u = FNC.ie2(ivp,4000)
 	@test u[end] ≈ sol.u[end] rtol=0.0005
-	t,u = FNC.rk4(g,[-1.,4],(1.,2.),-6,800)
+	t,u = FNC.rk4(ivp,800)
 	@test u[end] ≈ sol.u[end] rtol=0.0005
-	t,u = FNC.ab4(g,[-1.,4],(1.,2.),-6,800)
+	t,u = FNC.ab4(ivp,800)
 	@test u[end] ≈ sol.u[end] rtol=0.0005
-	t,u = FNC.rk23(g,[-1.,4],(1.,2.),-6,1e-4)
+	t,u = FNC.rk23(ivp,1e-4)
 	@test u[end] ≈ sol.u[end] rtol=0.0005
-	t,u = FNC.am2(g,[-1.,4],(1.,2.),-6,2000)
+	t,u = FNC.am2(ivp,2000)
 	@test u[end] ≈ sol.u[end] rtol=0.0005
 end
