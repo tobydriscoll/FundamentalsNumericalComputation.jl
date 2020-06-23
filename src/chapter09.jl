@@ -1,8 +1,8 @@
 """
-    polyinterp(t,y)
+polyinterp(t,y)
 
-Return a callable polynomial interpolant through the points in vectors `t`,`y`. Uses
-the barycentric interpolation formula.
+Return a callable polynomial interpolant through the points in
+vectors `t`,`y`. Uses the barycentric interpolation formula.
 """
 function polyinterp(t,y)
     n = length(t)-1
@@ -33,9 +33,10 @@ function polyinterp(t,y)
 end
 
 """
-    triginterp(t,y)
+triginterp(t,y)
 
-Return trigonometric interpolant for points defined by vectors `t` and `y`.
+Return trigonometric interpolant for points defined by vectors `t`
+and `y`.
 """
 function triginterp(t,y)
     N = length(t)
@@ -59,10 +60,11 @@ function triginterp(t,y)
 end
 
 """
-    ccint(f,n)
+ccint(f,n)
 
-Perform Clenshaw-Curtis integration for the function `f` on `n`+1 nodes in [-1,1]. Return
-integral and a vector of the nodes used. Note: `n` must be even.
+Perform Clenshaw-Curtis integration for the function `f` on `n`+1
+nodes in [-1,1]. Return integral and a vector of the nodes used.
+Note: `n` must be even.
 """
 function ccint(f,n)
     # Find Chebyshev extreme nodes.
@@ -82,10 +84,10 @@ function ccint(f,n)
 end
 
 """
-    glint(f,n)
+glint(f,n)
 
-Perform Gauss-Legendre integration for the function `f` on `n` nodes in (-1,1). Return
-integral and a vector of the nodes used.
+Perform Gauss-Legendre integration for the function `f` on `n` nodes
+in (-1,1). Return integral and a vector of the nodes used.
 """
 function glint(f,n)
     # Nodes and weights are found via a tridiagonal eigenvalue problem.
@@ -102,11 +104,11 @@ function glint(f,n)
 end
 
 """
-    intde(f,h,M)
+intde(f,h,M)
 
-Perform doubly-exponential integration of function `f` over (-Inf,Inf), using
-discretization size `h` and truncation point `M`. Return integral and a vector of the
-nodes used.
+Perform doubly-exponential integration of function `f` over
+(-Inf,Inf), using discretization size `h` and truncation point `M`.
+Return integral and a vector of the nodes used.
 """
 function intde(f,h,M)
     # Find where to truncate the trapezoid sum.
@@ -122,11 +124,11 @@ function intde(f,h,M)
 end
 
 """
-    intsing(f,h,delta)
+intsing(f,h,delta)
 
-Integrate function `f` (possibly singular at 1 and -1) over [-1+`delta`,1-`delta`]
-using discretization size `h`. Return integral and a vector of the
-nodes used.
+Integrate function `f` (possibly singular at 1 and -1) over
+[-1+`delta`,1-`delta`] using discretization size `h`. Return
+integral and a vector of the nodes used.
 """
 function intsing(f,h,delta)
     # Find where to truncate the trapezoid sum.

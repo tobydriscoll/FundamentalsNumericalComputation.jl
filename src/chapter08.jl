@@ -1,8 +1,9 @@
 """
-    poweriter(A,numiter)
+poweriter(A,numiter)
 
-Perform `numiter` power iterations with the matrix `A`, starting from a random vector,
-and return a vector of eigenvalue estimates and the final eigenvector approximation.
+Perform `numiter` power iterations with the matrix `A`, starting
+from a random vector, and return a vector of eigenvalue estimates
+and the final eigenvector approximation.
 """
 function poweriter(A,numiter)
     n = size(A,1)
@@ -19,11 +20,11 @@ function poweriter(A,numiter)
 end
 
 """
-    inviter(A,s,numiter)
+inviter(A,s,numiter)
 
-    Perform `numiter` inverse iterations with the matrix `A` and shift `s`, starting
-    from a random vector, and return a vector of eigenvalue estimates and the final
-    eigenvector approximation.
+Perform `numiter` inverse iterations with the matrix `A` and shift
+`s`, starting from a random vector, and return a vector of
+eigenvalue estimates and the final eigenvector approximation.
 """
 function inviter(A,s,numiter)
     n = size(A,1)
@@ -41,11 +42,11 @@ function inviter(A,s,numiter)
 end
 
 """
-    arnoldi(A,u,m)
+arnoldi(A,u,m)
 
-Perform the Arnoldi iteration for `A` starting with vector `u`, out to the Krylov
-subspace of degree `m`. Return the orthonormal basis (`m`+1 columns) and the upper
-Hessenberg `H` of size `m`+1 by `m`.
+Perform the Arnoldi iteration for `A` starting with vector `u`, out
+to the Krylov subspace of degree `m`. Return the orthonormal basis
+(`m`+1 columns) and the upper Hessenberg `H` of size `m`+1 by `m`.
 """
 function arnoldi(A,u,m)
     n = length(u)
@@ -69,11 +70,11 @@ function arnoldi(A,u,m)
 end
 
 """
-    arngmres(A,b,m)
+arngmres(A,b,m)
 
-Do `m` iterations of GMRES for the linear system `A`*x=`b`. Return the final solution
-estimate x and a vector with the history of residual norms. (This function is for
-demo only, not practical use.)
+Do `m` iterations of GMRES for the linear system `A`*x=`b`. Return
+the final solution estimate x and a vector with the history of
+residual norms. (This function is for demo only, not practical use.)
 """
 function arngmres(A,b,m)
     n = length(b)
@@ -105,10 +106,13 @@ function arngmres(A,b,m)
     return x,residual
 end
 
+# These are not part of the text proper, but replace a MATLAB
+# function to generate random sparse symmetric matrices.
+
 function sprandsym(n,density,lambda::Vector)
     function randjr(A)
         # Random Jacobi rotation similarity transformation.
-        theta = 2pi*rand()
+        theta = 2π*rand()
         c,s = cos(theta),sin(theta)
         i,j = rand(1:n,2)
         A[[i,j],:] = [c s;-s c]*A[[i,j],:]

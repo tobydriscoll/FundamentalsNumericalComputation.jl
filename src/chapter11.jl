@@ -1,9 +1,10 @@
 """
-    diffper(n,xspan)
+diffper(n,xspan)
 
-Construct 2nd-order differentiation matrices for functions with periodic end
-conditions, using `n` unique nodes in the interval `xspan`. Return a vector of
-nodes and the  matrices for the first and second derivatives.
+Construct 2nd-order differentiation matrices for functions with
+periodic end conditions, using `n` unique nodes in the interval
+`xspan`. Return a vector of nodes and the  matrices for the first
+and second derivatives.
 """
 function diffper(n,xspan)
     a,b = xspan

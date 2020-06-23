@@ -1,15 +1,17 @@
 """
 shoot(phi,xspan,lval,lder,rval,rder,init)
 
-Use the shooting method to solve a two-point boundary value problem. The ODE is
-u'' = `phi`(x,u,u') for x in `xspan`. Specify a function value or derivative at
-the left endpoint using `lval` and `lder`, respectively, and similarly for the
-right endpoint  using `rval` and `rder`. (Use an empty array to denote an
-unknown quantity.) The value `init` is an initial guess for whichever value is
-missing at the left endpoint.
+Use the shooting method to solve a two-point boundary value problem.
+The ODE is u'' = `phi`(x,u,u') for x in `xspan`. Specify a function
+value or derivative at the left endpoint using `lval` and `lder`,
+respectively, and similarly for the right endpoint  using `rval` and
+`rder`. (Use an empty array to denote an unknown quantity.) The
+value `init` is an initial guess for whichever value is missing at
+the left endpoint.
 
-Return vectors for the nodes, the values of u, and the values of u'.
-    """
+Returns vectors for the nodes, the values of u, and the values of
+u'.
+"""
 function shoot(phi,xspan,lval,lder,rval,rder,init)
 
     # Tolerances for IVP solver and rootfinder.
@@ -46,11 +48,11 @@ function shoot(phi,xspan,lval,lder,rval,rder,init)
 end
 
 """
-    diffmat2(n,xspan)
+diffmat2(n,xspan)
 
-Compute 2nd-order-accurate differentiation matrices on `n`+1 points in the
-interval `xspan`. Return a vector of nodes, and the matrices for the first
-and second derivatives.
+Compute 2nd-order-accurate differentiation matrices on `n`+1 points
+in the interval `xspan`. Return a vector of nodes, and the matrices
+for the first and second derivatives.
 """
 function diffmat2(n,xspan)
     a,b = xspan
@@ -79,11 +81,11 @@ function diffmat2(n,xspan)
 end
 
 """
-    diffcheb(n,xspan)
+diffcheb(n,xspan)
 
 Compute Chebyshev differentiation matrices on `n`+1 points in the
-interval `xspan`. Return a vector of nodes, and the matrices for the first
-and second derivatives.
+interval `xspan`. Return a vector of nodes, and the matrices for the
+first and second derivatives.
 """
 function diffcheb(n,xspan)
     x = [ -cos( k*pi/n ) for k=0:n ]    # nodes in [-1,1]
@@ -110,14 +112,14 @@ function diffcheb(n,xspan)
 end
 
 """
-     bvplin(p,q,r,xspan,lval,rval,n)
+bvplin(p,q,r,xspan,lval,rval,n)
 
-Use finite differences to solve a linear bopundary value problem. The ODE is
-u''+`p`(x)u'+`q`(x)u = `r`(x) on the interval `xspan`, with endpoint function
-values given as `lval` and `rval`. There will be `n`+1 equally spaced nodes,
-including the endpoints.
+Use finite differences to solve a linear bopundary value problem.
+The ODE is u''+`p`(x)u'+`q`(x)u = `r`(x) on the interval `xspan`,
+with endpoint function values given as `lval` and `rval`. There will
+be `n`+1 equally spaced nodes, including the endpoints.
 
-Return vectors of the nodes and the solution values.
+Returns vectors of the nodes and the solution values.
 """
 function bvplin(p,q,r,xspan,lval,rval,n)
     x,Dx,Dxx = diffmat2(n,xspan)
@@ -138,16 +140,17 @@ function bvplin(p,q,r,xspan,lval,rval,n)
 end
 
 """
-    bvp(phi,xspan,lval,lder,rval,rder,init)
+bvp(phi,xspan,lval,lder,rval,rder,init)
 
-Use finite differences to solve a two-point boundary value problem. The ODE is
-u'' = `phi`(x,u,u') for x in `xspan`. Specify a function value or derivative at
-the left endpoint using `lval` and `lder`, respectively, and similarly for the
-right endpoint  using `rval` and `rder`. (Use an empty array to denote an
-unknown quantity.) The value `init` is an initial guess for whichever value is
-missing at the left endpoint.
+Use finite differences to solve a two-point boundary value problem.
+The ODE is u'' = `phi`(x,u,u') for x in `xspan`. Specify a function
+value or derivative at the left endpoint using `lval` and `lder`,
+respectively, and similarly for the right endpoint  using `rval` and
+`rder`. (Use an empty array to denote an unknown quantity.) The
+value `init` is an initial guess for whichever value is missing at
+the left endpoint.
 
-Return vectors for the nodes and the values of u.
+Returns vectors for the nodes and the values of u.
 """
 function bvp(phi,xspan,lval,lder,rval,rder,init)
     n = length(init) - 1
@@ -172,12 +175,12 @@ function bvp(phi,xspan,lval,lder,rval,rder,init)
 end
 
 """
-    fem(c,s,f,a,b,n)
+fem(c,s,f,a,b,n)
 
-Use a piecewise linear finite element method to solve a two-point boundary
-value problem. The ODE is (`c`(x)u')' + `s`(x)u = `f`(x) on the interval
-[`a`,`b`], and the boundary values are zero. The discretization uses `n` equal
-subintervals.
+Use a piecewise linear finite element method to solve a two-point
+boundary value problem. The ODE is (`c`(x)u')' + `s`(x)u = `f`(x) on
+the interval [`a`,`b`], and the boundary values are zero. The
+discretization uses `n` equal subintervals.
 
 Return vectors for the nodes and the values of u.
 """
