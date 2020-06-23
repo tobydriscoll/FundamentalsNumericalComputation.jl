@@ -1,7 +1,7 @@
 name = "FundamentalsNumericalComputation"
 uuid = "e48b7b93-d2a8-4750-aba7-f743ccd5256c"
 authors = ["Toby Driscoll <driscoll@udel.edu>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -16,3 +16,14 @@ Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[compat]
+julia = "1.0"
+Plots = "1.4"
+DifferentialEquations = "6.0"
+Polynomials = "1.0"
+NLsolve = "4.4"
+Interpolations = "0.12"
+DataFrames = "0.21"
+QuadGK = "2.3"
+SpecialFunctions = "0.10"
