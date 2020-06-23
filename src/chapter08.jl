@@ -81,7 +81,8 @@ function arngmres(A,b,m)
     Q[:,1] = b/norm(b)
     H = zeros(m+1,m)
 
-    # Initial "solution" is zero.
+    # Initial solution is zero.
+    x = 0
     residual = [norm(b);zeros(m)]
     
     for j = 1:m
