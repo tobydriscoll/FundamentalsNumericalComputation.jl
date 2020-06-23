@@ -39,10 +39,10 @@ return x -> sum( y[k+1]*hatfun(x,t,k) for k in 0:n )
 end
 
 """
-    spinterp(t,y)
+spinterp(t,y)
 
-    Create a cubic not-a-knot spline interpolating function for data
-    values in `y` given at nodes in `t`.
+Create a cubic not-a-knot spline interpolating function for data
+values in `y` given at nodes in `t`.
 """
 function spinterp(t,y)
 
