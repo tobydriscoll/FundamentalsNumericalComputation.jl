@@ -1,8 +1,8 @@
 """
-    newton(f,dfdx,x1)
+newton(f,dfdx,x1)
 
-Use Newton's method to find a root of `f` starting from `x1`, where `dfdx` is the
-derivative of `f`. Returns a vector of root estimates.
+Use Newton's method to find a root of `f` starting from `x1`, where
+`dfdx` is the derivative of `f`. Returns a vector of root estimates.
 """
 function newton(f,dfdx,x1)
     # Operating parameters.
@@ -30,10 +30,10 @@ function newton(f,dfdx,x1)
 end
 
 """
-    secant(f,x1,x2)
+secant(f,x1,x2)
 
-Use the secant method to find a root of `f` starting from `x1` and `x2`. Returns a
-vector of root estimates.
+Use the secant method to find a root of `f` starting from `x1` and
+`x2`. Returns a vector of root estimates.
 """
 function secant(f,x1,x2)
     # Operating parameters.
@@ -61,11 +61,12 @@ function secant(f,x1,x2)
 end
 
 """
-    newtonsys(f,jac,x1)
+newtonsys(f,jac,x1)
 
-Use Newton's method to find a root of a system of equations, starting from `x1`. The
-functions `f` and `jac should return the residual vector and the Jacobian matrix, 
-respectively. Returns history of root estimates as a vector of vectors.
+Use Newton's method to find a root of a system of equations,
+starting from `x1`. The functions `f` and `jac should return the
+residual vector and the Jacobian matrix, respectively. Returns
+history of root estimates as a vector of vectors.
 """
 function newtonsys(f,jac,x1)
     # Operating parameters.
@@ -91,10 +92,10 @@ function newtonsys(f,jac,x1)
 end
 
 """
-    fdjac(f,x0,y0)
+fdjac(f,x0,y0)
 
-Compute a finite-difference approximation of the Jacobian matrix for `f` at `x0`,
-where `y0`=`f(x0)` is given.
+Compute a finite-difference approximation of the Jacobian matrix for
+`f` at `x0`, where `y0`=`f(x0)` is given.
 """
 function fdjac(f,x0,y0)
 
@@ -114,11 +115,12 @@ return J
 end
 
 """
-    levenberg(f,x1,tol)
+levenberg(f,x1,tol)
 
-Use Levenberg's quasi-Newton iteration to find a root of the system `f`, starting from
-`x1`, with `tol` as the stopping tolerance in both step size and residual norm. Returns
-root estimates as a matrix, one estimate per column.
+Use Levenberg's quasi-Newton iteration to find a root of the system
+`f`, starting from `x1`, with `tol` as the stopping tolerance in
+both step size and residual norm. Returns root estimates as a
+matrix, one estimate per column.
 """
 function levenberg(f,x1,tol=1e-12)
 

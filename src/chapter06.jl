@@ -1,7 +1,8 @@
 """
-    euler(ivp,n)
+euler(ivp,n)
 
-Apply Euler's method to solve the given IVP using `n` time steps. Returns a vector of times and a vector of solution values.
+Apply Euler's method to solve the given IVP using `n` time steps.
+Returns a vector of times and a vector of solution values.
 """
 function euler(ivp,n)
     # Time discretization.
@@ -20,9 +21,11 @@ function euler(ivp,n)
 end
 
 """
-    ie2(ivp,n)
+ie2(ivp,n)
 
-Apply the Improved Euler method to solve the given IVP using `n` time steps. Returns a vector of times and a vector of solution values.
+Apply the Improved Euler method to solve the given IVP using `n`
+time steps. Returns a vector of times and a vector of solution
+values.
 """
 function ie2(ivp,n)
     # Time discretization.
@@ -42,9 +45,11 @@ function ie2(ivp,n)
 end
 
 """
-    rk4(ivp,n)
+rk4(ivp,n)
 
-Apply "the" Runge-Kutta 4th order method to solve the given IVP using `n` time steps. Returns a vector of times and a vector of solution values.
+Apply "the" Runge-Kutta 4th order method to solve the given IVP
+using `n` time steps. Returns a vector of times and a vector of
+solution values.
 """
 function rk4(ivp,n)
     # Time discretization.
@@ -67,9 +72,11 @@ function rk4(ivp,n)
 end
 
 """
-    rk23(ivp,tol)
+rk23(ivp,tol)
 
-Apply an adaptive embedded RK formula pair to solve given IVP with estimated error `tol`. Returns a vector of times and a vector of solution values.
+Apply an adaptive embedded RK formula pair to solve given IVP with
+estimated error `tol`. Returns a vector of times and a vector of
+solution values.
 """
 function rk23(ivp,tol)
     # Initialize for the first time step.
@@ -92,9 +99,9 @@ function rk23(ivp,tol)
         s3 = ivp.f( u[i]+(3*h/4)*s2, ivp.p, t[i]+3*h/4 )
         unew2 = u[i] + h*(2*s1 + 3*s2 + 4*s3)/9   # 2rd order solution
         s4 = ivp.f( unew2, ivp.p, t[i]+h )
-        err = h*(-5*s1/72 + s2/12 + s3/9 - s4/8)    # 2nd/3rd order difference
-        E = norm(err,Inf)                           # error estimate
-        maxerr = tol*(1 + norm(u[i],Inf))         # relative/absolute blend
+        err = h*(-5*s1/72 + s2/12 + s3/9 - s4/8)  # 2nd/3rd difference
+        E = norm(err,Inf)                         # error estimate
+        maxerr = tol*(1 + norm(u[i],Inf))     # relative/absolute blend
 
         # Accept the proposed step?
         if E < maxerr     # yes
@@ -105,17 +112,18 @@ function rk23(ivp,tol)
         end
 
         # Adjust step size.
-        q = 0.8*(maxerr/E)^(1/3)       # conservative optimal step factor
-        q = min(q,4)                   # limit stepsize growth
-        h = min(q*h,b-t[i])     # don't step past the end
+        q = 0.8*(maxerr/E)^(1/3)   # conservative optimal step factor
+        q = min(q,4)               # limit stepsize growth
+        h = min(q*h,b-t[i])        # don't step past the end
     end
     return t,u
 end
 
 """
-    ab4(ivp,n)
+ab4(ivp,n)
 
-Apply the Adams-Bashforth 4th order method to solve the given IVP using `n` time steps.
+Apply the Adams-Bashforth 4th order method to solve the given IVP
+using `n` time steps.
 """
 function ab4(ivp,n)
     # Time discretization.
@@ -138,16 +146,17 @@ function ab4(ivp,n)
     # Time stepping.
     for i in k:n
       f = [ ivp.f(u[i],ivp.p,t[i]), f[1:k-1]... ]   # new value of du/dt
-      u[i+1] = u[i] + h*sum(f[j]*sigma[j] for j in 1:k)       # advance one step
+      u[i+1] = u[i] + h*sum(f[j]*sigma[j] for j in 1:k)  # advance a step
     end
     return t,u
 end
 
 
 """
-    am2(ivp,n)
+am2(ivp,n)
 
-Apply the Adams-Moulton 2nd order method to solve given IVP using `n` time steps.
+Apply the Adams-Moulton 2nd order method to solve given IVP using
+`n` time steps.
 """
 function am2(ivp,n)
     # Time discretization.

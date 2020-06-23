@@ -1,8 +1,8 @@
 """
-    forwardsub(L,b)
+forwardsub(L,b)
 
-Solve the lower-triangular linear system with matrix `L` and right-hand side
-vector `b`.
+Solve the lower-triangular linear system with matrix `L` and
+right-hand side vector `b`.
 """
 function forwardsub(L,b)
 
@@ -18,10 +18,10 @@ return x
 end
 
 """
-    backsub(U,b)
+backsub(U,b)
 
-Solve the upper-triangular linear system with matrix `U` and right-hand side
-vector `b`.
+Solve the upper-triangular linear system with matrix `U` and
+right-hand side vector `b`.
 """
 function backsub(U,b)
 
@@ -37,9 +37,10 @@ return x
 end
 
 """
-    lufact(A)
+lufact(A)
 
-Compute the LU factorization of square matrix `A`, returning the factors.
+Compute the LU factorization of square matrix `A`, returning the
+factors.
 """
 function lufact(A)
 

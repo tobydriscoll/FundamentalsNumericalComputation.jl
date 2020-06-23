@@ -1,14 +1,15 @@
 """
-    hatfun(x,t,k)
+hatfun(x,t,k)
 
-Evaluate a piecewise linear "hat" function at `x`, where `t` is a vector of
-n+1 interpolation nodes and `k` is an integer in 0:n giving the index of the node
-where the hat function equals one.
+Evaluate a piecewise linear "hat" function at `x`, where `t` is a
+vector of n+1 interpolation nodes and `k` is an integer in 0:n
+giving the index of the node where the hat function equals one.
 """
 
 function hatfun(x,t,k)
     n = length(t)-1
-    # Return correct node given mathematical index k, including fictitious choices.   
+    # Return correct node given mathematical index k, including
+    # fictitious choices.   
     function node(k)
         if k < 0
             2t[1]-t[2]
@@ -27,10 +28,10 @@ function hatfun(x,t,k)
 end
 
 """
-    plinterp(t,y)
+plinterp(t,y)
 
-Create a piecewise linear interpolating function for data values in `y` given at nodes
-in `t`.
+Create a piecewise linear interpolating function for data values in
+`y` given at nodes in `t`.
 """
 function plinterp(t,y)
 n = length(t)-1
@@ -40,8 +41,8 @@ end
 """
     spinterp(t,y)
 
-Create a cubic not-a-knot spline interpolating function for data values in `y` given at nodes
-in `t`.
+    Create a cubic not-a-knot spline interpolating function for data
+    values in `y` given at nodes in `t`.
 """
 function spinterp(t,y)
 
@@ -84,7 +85,8 @@ function spinterp(t,y)
     a = z[rows]
     b = z[n.+rows];  c = z[2*n.+rows];  d = z[3*n.+rows]
     S = [ Polynomial([a[k],b[k],c[k],d[k]]) for k = 1:n ]
-    # This function evaluates the spline when called with a value for x.
+    # This function evaluates the spline when called with a value
+    # for x.
     function evaluate(x)
         k = findfirst(@. x<t)   # one greater than interval x belongs to
         k==1 && return NaN
@@ -99,19 +101,16 @@ end
 """
 fdweights(t,m)
 
-Return weights for the `m`th derivative of a function at zero using values at the
-nodes in vector `t`.
+Return weights for the `m`th derivative of a function at zero using
+values at the nodes in vector `t`.
 """
 function fdweights(t,m)
     # This is a compact implementation, not an efficient one.
 
     function weight(t,m,r,k)
-        # Recursion for one weight.
-        # Input:
-        #   t   nodes (vector)
-        #   m   order of derivative sought
-        #   r   number of nodes to use from t (<= length(t))
-        #   k   index of node whose weight is found
+        # Recursion for one weight. Input: t   nodes (vector) m
+        # order of derivative sought r   number of nodes to use from
+        # t (<= length(t)) k   index of node whose weight is found
 
         if (m<0) || (m>r)        # undefined coeffs must be zero
             c = 0
@@ -124,8 +123,8 @@ function fdweights(t,m)
             else
                 numer = r > 1 ? prod(t[r]-x for x in t[1:r-1]) : 1.0
                 denom = r > 0 ? prod(t[r+1]-x for x in t[1:r]) : 1.0
-                beta =  numer/denom
-                c = beta*(m*weight(t,m-1,r-1,r-1) - t[r]*weight(t,m,r-1,r-1))
+                β = numer/denom
+                c = β*(m*weight(t,m-1,r-1,r-1) - t[r]*weight(t,m,r-1,r-1))
             end
         end
         return c
@@ -137,11 +136,12 @@ function fdweights(t,m)
 end
 
 """
-    trapezoid(f,a,b,n)
+trapezoid(f,a,b,n)
 
-Apply the trapezoid integration formula for integrand `f` over interval [`a`,`b`],
-broken up into `n` equal pieces. Returns estimate, vector of nodes, and vector of
-integrand values at the nodes.
+Apply the trapezoid integration formula for integrand `f` over
+interval [`a`,`b`], broken up into `n` equal pieces. Returns
+estimate, vector of nodes, and vector of integrand values at the
+nodes.
 """
 function trapezoid(f,a,b,n)
     h = (b-a)/n
@@ -153,10 +153,11 @@ function trapezoid(f,a,b,n)
 end
 
 """
-    intadapt(f,a,b,tol)
+intadapt(f,a,b,tol)
 
-Do adaptive integration to estimate the integral of `f` over [`a`,`b`] to desired
-error tolerance `tol`. Returns estimate and a vector of evaluation nodes used.
+Do adaptive integration to estimate the integral of `f` over
+[`a`,`b`] to desired error tolerance `tol`. Returns estimate and a
+vector of evaluation nodes used.
 """
 function intadapt(f,a,b,tol)
     # Use error estimation and recursive bisection.
@@ -164,7 +165,7 @@ function intadapt(f,a,b,tol)
         # These are the two new nodes and their f-values.
         xl = (a+m)/2;  fl = f(xl);
         xr = (m+b)/2;  fr = f(xr);
-        t = [a,xl,m,xr,b]              # all 5 nodes at this level
+        t = [a,xl,m,xr,b]          # all 5 nodes at this level
 
         # Compute the trapezoid values iteratively.
         h = (b-a)
@@ -183,7 +184,7 @@ function intadapt(f,a,b,tol)
             QL,tL = do_integral(a,fa,m,fm,xl,fl,tol)
             QR,tR = do_integral(m,fm,b,fb,xr,fr,tol)
             Q = QL + QR
-            t = [tL;tR[2:end]]         # merge the nodes w/o duplicate
+            t = [tL;tR[2:end]]   # merge the nodes w/o duplicate
         end
         return Q,t
     end

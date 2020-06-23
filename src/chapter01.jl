@@ -1,8 +1,8 @@
 """
-    horner(c,x)
+horner(c,x)
 
-Evaluate a polynomial whose coefficients are given in ascending order in `c`,
-at the point `x`, using Horner's rule.
+Evaluate a polynomial whose coefficients are given in ascending
+order in `c`, at the point `x`, using Horner's rule.
 """
 function horner(c,x)
 

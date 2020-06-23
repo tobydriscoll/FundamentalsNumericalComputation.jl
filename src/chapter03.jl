@@ -1,8 +1,8 @@
 """
-    lsnormal(A,b)
+lsnormal(A,b)
 
-Solve a linear least squares problem by the normal equations. Returns the
-minimizer of ||b-Ax||.
+Solve a linear least squares problem by the normal equations.
+Returns the minimizer of ||b-Ax||.
 """
 function lsnormal(A,b)
 
@@ -16,10 +16,10 @@ end
 
 
 """
-    lsqrfact(A,b)
+lsqrfact(A,b)
 
-Solve a linear least squares problem by QR factorization. Returns the
-minimizer of ||b-Ax||.
+Solve a linear least squares problem by QR factorization. Returns
+the minimizer of ||b-Ax||.
 """
 function lsqrfact(A,b)
 
@@ -31,7 +31,7 @@ return x
 end
 
 """
-    qrfact(A)
+qrfact(A)
 
 QR factorization by Householder reflections. Returns Q and R.
 """
@@ -44,8 +44,8 @@ function qrfact(A)
       z = R[k:m,k]
       v = [ -sign(z[1])*norm(z) - z[1]; -z[2:end] ]
       nrmv = norm(v)
-      if nrmv < eps() continue; end     # nothing is done in this iteration
-      v = v / nrmv;                     # removes v'*v in other formulas
+      if nrmv < eps() continue; end  # skip this iteration
+      v = v / nrmv;                  # simplifies other formulas
       # Apply the reflection to each relevant column of A and Q
       for j in 1:n
         R[k:m,j] -= v*( 2*(v'*R[k:m,j]) )
