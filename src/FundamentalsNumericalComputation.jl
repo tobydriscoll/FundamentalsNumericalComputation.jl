@@ -11,7 +11,8 @@ using Reexport
 @reexport using NLsolve
 @reexport using DifferentialEquations
 @reexport using Plots
-@reexport using DataFrames 
+@reexport using PrettyTables
+@reexport using QuadGK 
 @reexport using Interpolations
 
 @info "Exporting: LinearAlgebra,SparseArrays,Polynomials,NLsolve,Interpolations,DifferentialEquations,DataFrames,Plots"
