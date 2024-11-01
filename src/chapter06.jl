@@ -38,8 +38,8 @@ function ie2(ivp,n)
 
     # Time stepping.
     for i in 1:n
-        uhalf = u[i] + h/2*ivp.f(u[i],ivp.p,t[i]);
-        u[i+1] = u[i] + h*ivp.f(uhalf,ivp.p,t[i]+h/2);
+        uhalf = u[i] + h/2*ivp.f(u[i],ivp.p,t[i])
+        u[i+1] = u[i] + h*ivp.f(uhalf,ivp.p,t[i]+h/2)
     end
     return t,u
 end
